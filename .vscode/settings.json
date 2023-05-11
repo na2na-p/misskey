@@ -1,10 +1,10 @@
 {
 	"search.exclude": {
-		"**/node_modules": true
+			"**/node_modules": true
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"files.associations": {
-		"*.test.ts": "typescript"
+			"*.test.ts": "typescript"
 	},
 	"jest.runMode": "on-demand",
 	"jest.virtualFolders": [
