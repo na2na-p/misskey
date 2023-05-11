@@ -1,15 +1,21 @@
 {
 	"search.exclude": {
-		"**/node_modules": true
+			"**/node_modules": true
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"files.associations": {
-		"*.test.ts": "typescript"
+			"*.test.ts": "typescript"
 	},
 	"jest.jestCommandLine": "pnpm run jest",
-	"jest.runMode": "on-demand",
-	"editor.codeActionsOnSave": {
-		"source.fixAll": "explicit"
-	},
-	"editor.formatOnSave": false
+	"jest.autoRun": "off",
+	"editor.formatOnSave": false,
+	"cSpell.words": [
+		"getmeili",
+		"healthcheck",
+		"isready",
+		"Meili",
+		"meilisearch",
+		"memlock",
+		"ulimits"
+	]
 }
