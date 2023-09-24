@@ -224,9 +224,8 @@ if (!mock) {
 	}
 
 	&.reacted, &.reacted:hover {
-		background: var(--MI_THEME-accentedBg);
-		color: var(--MI_THEME-accent);
-		box-shadow: 0 0 0 1px var(--MI_THEME-accent) inset;
+		background: var(--accentedBg);
+		color: var(--accent);
 
 		> .count {
 			color: var(--MI_THEME-accent);
