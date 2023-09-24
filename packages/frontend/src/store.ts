@@ -332,7 +332,7 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	reactionsDisplaySize: {
 		where: 'device',
-		default: 'medium' as 'small' | 'medium' | 'large',
+		default: 'small' as 'small' | 'medium' | 'large',
 	},
 	limitWidthOfReaction: {
 		where: 'device',
