@@ -112,6 +112,8 @@ type Source = {
 			enableQueryParamLogging?: boolean,
 		}
 	}
+
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers?: boolean;
 };
 
 export type Config = {
@@ -207,6 +209,7 @@ export type Config = {
 	perUserNotificationsMaxCount: number;
 	deactivateAntennaThreshold: number;
 	pidFile: string;
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers: boolean;
 };
 
 export type FulltextSearchProvider = 'sqlLike' | 'sqlPgroonga' | 'meilisearch';
@@ -320,6 +323,7 @@ export function loadConfig(): Config {
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
 		logging: config.logging,
+		misskeyBlockMentionsFromUnfamiliarRemoteUsers: config.misskeyBlockMentionsFromUnfamiliarRemoteUsers ?? false,
 	};
 }
 
