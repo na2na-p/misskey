@@ -219,3 +219,7 @@ signToActivityPubGet: true
 
 # Upload or download file size limits (bytes)
 #maxFileSize: 262144000
+
+# ローカル宛てのメンション、リプライ、引用ノートの発行元が、ローカルユーザーにフォローされていない場合に投稿を拒否するかどうか
+# default: false
+# misskeyBlockMentionsFromUnfamiliarRemoteUsers: false
