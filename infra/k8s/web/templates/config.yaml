@@ -59,8 +59,8 @@ data:
     #───┘ Redis configuration └─────────────────────────────────────
 
     redis:
-      host: redis
-      port: 6379
+      host: {{ .Values.redis.host }}
+      port: {{ .Values.redis.port }}
       #family: 0  # 0=Both, 4=IPv4, 6=IPv6
       #pass: example-pass
       #prefix: example-prefix
