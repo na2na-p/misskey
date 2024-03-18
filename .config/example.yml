@@ -123,8 +123,9 @@ db:
   #disableCache: true
 
   # Extra Connection options
-  #extra:
-  #  ssl: true
+  # extra:
+  #   ssl:
+  #     rejectUnauthorized: false
 
 dbReplications: false
 
