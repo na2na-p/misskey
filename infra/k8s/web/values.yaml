@@ -12,6 +12,10 @@ database:
   user: "misskey"
   pass: "misskey"
 
+redis:
+  host: "localhost"
+  port: 6379
+
 service:
   host: "https://mk8stest.na2na.dev/"
   type: NodePort
