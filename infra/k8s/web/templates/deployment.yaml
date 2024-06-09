@@ -1,12 +1,12 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "web.fullname" . }}
   labels:
     {{- include "web.labels" . | nindent 4 }}
 spec:
-  serviceName: "web"
-  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       {{- include "web.selectorLabels" . | nindent 6 }}
@@ -23,8 +23,21 @@ spec:
             - containerPort: 3000
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 3000
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            httpGet:
+              path: /healthz
+              port: 3000
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
           volumeMounts:
           - mountPath: /misskey/.config
             name: misskey-default-conf-file

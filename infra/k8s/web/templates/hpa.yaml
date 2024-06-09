@@ -1,5 +1,5 @@
 {{- if .Values.hpa.enabled -}}
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "web.fullname" . }}
@@ -8,10 +8,28 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: StatefulSet
+    kind: Deployment
     name: {{ include "web.fullname" . }}
   minReplicas: {{ .Values.hpa.minReplicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
-  targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
-  # targetMemoryUtilizationPercentage: {{ .Values.hpa.targetMemoryUtilizationPercentage }} # 必要に応じてコメントアウトを解除
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.targetCPUUtilizationPercentage }}
+  behavior:
+    scaleUp:
+      policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+      stabilizationWindowSeconds: 300
+    scaleDown:
+      policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+      stabilizationWindowSeconds: 300
 {{- end }}
