@@ -53,74 +53,74 @@ jobs:
       run: pnpm --filter misskey-js build
     - name: Build storybook
       run: pnpm --filter frontend build-storybook
-    - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master'
-      run: pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static
-      env:
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref != 'refs/heads/master'
-      id: chromatic_push
-      run: |
-        DIFF="${{ github.event.before }} HEAD"
-        if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
-          DIFF="HEAD"
-        fi
-        CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
-        if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
-          echo "skip=true" >> $GITHUB_OUTPUT
-        fi
-        if pnpm --filter frontend chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
-          echo "success=true" >> $GITHUB_OUTPUT
-        else
-          echo "success=false" >> $GITHUB_OUTPUT
-        fi
-      env:
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Publish to Chromatic
-      if: github.event_name == 'pull_request_target'
-      id: chromatic_pull_request
-      run: |
-        DIFF="${{ steps.rev.outputs.base }} HEAD"
-        if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
-          DIFF="HEAD"
-        fi
-        CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
-        if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
-          echo "skip=true" >> $GITHUB_OUTPUT
-        fi
-        BRANCH="${{ github.event.pull_request.head.user.login }}:$HEAD_REF"
-        if [ "$BRANCH" = "misskey-dev:$HEAD_REF" ]; then
-          BRANCH="$HEAD_REF"
-        fi
-        pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
-      env:
-        HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Notify that Chromatic detects changes
-      uses: actions/github-script@v7.0.1
-      if: github.event_name != 'pull_request_target' && steps.chromatic_push.outputs.success == 'false'
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.repos.createCommitComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            commit_sha: context.sha,
-            body: 'Chromatic detects changes. Please [review the changes on Chromatic](https://www.chromatic.com/builds?appId=6428f7d7b962f0b79f97d6e4).'
-          })
-    - name: Notify that Chromatic will skip testing
-      uses: actions/github-script@v7.0.1
-      if: github.event_name == 'pull_request' && steps.chromatic_pull_request.outputs.skip == 'true'
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Chromatic will skip testing but you may still have to [review the changes on Chromatic](https://www.chromatic.com/pullrequests?appId=6428f7d7b962f0b79f97d6e4).'
-          })
+    # - name: Publish to Chromatic
+    #   if: github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master'
+    #   run: pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static
+    #   env:
+    #     CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    # - name: Publish to Chromatic
+    #   if: github.event_name != 'pull_request_target' && github.ref != 'refs/heads/master'
+    #   id: chromatic_push
+    #   run: |
+    #     DIFF="${{ github.event.before }} HEAD"
+    #     if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
+    #       DIFF="HEAD"
+    #     fi
+    #     CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
+    #     if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
+    #       echo "skip=true" >> $GITHUB_OUTPUT
+    #     fi
+    #     if pnpm --filter frontend chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
+    #       echo "success=true" >> $GITHUB_OUTPUT
+    #     else
+    #       echo "success=false" >> $GITHUB_OUTPUT
+    #     fi
+    #   env:
+    #     CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    # - name: Publish to Chromatic
+    #   if: github.event_name == 'pull_request_target'
+    #   id: chromatic_pull_request
+    #   run: |
+    #     DIFF="${{ steps.rev.outputs.base }} HEAD"
+    #     if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
+    #       DIFF="HEAD"
+    #     fi
+    #     CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
+    #     if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
+    #       echo "skip=true" >> $GITHUB_OUTPUT
+    #     fi
+    #     BRANCH="${{ github.event.pull_request.head.user.login }}:$HEAD_REF"
+    #     if [ "$BRANCH" = "misskey-dev:$HEAD_REF" ]; then
+    #       BRANCH="$HEAD_REF"
+    #     fi
+    #     pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static --branch-name $BRANCH $(echo "$CHROMATIC_PARAMETER")
+    #   env:
+    #     HEAD_REF: ${{ github.event.pull_request.head.ref }}
+    #     CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    # - name: Notify that Chromatic detects changes
+    #   uses: actions/github-script@v7.0.1
+    #   if: github.event_name != 'pull_request_target' && steps.chromatic_push.outputs.success == 'false'
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     script: |
+    #       github.rest.repos.createCommitComment({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         commit_sha: context.sha,
+    #         body: 'Chromatic detects changes. Please [review the changes on Chromatic](https://www.chromatic.com/builds?appId=6428f7d7b962f0b79f97d6e4).'
+    #       })
+    # - name: Notify that Chromatic will skip testing
+    #   uses: actions/github-script@v7.0.1
+    #   if: github.event_name == 'pull_request' && steps.chromatic_pull_request.outputs.skip == 'true'
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     script: |
+    #       github.rest.issues.createComment({
+    #         issue_number: context.issue.number,
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         body: 'Chromatic will skip testing but you may still have to [review the changes on Chromatic](https://www.chromatic.com/pullrequests?appId=6428f7d7b962f0b79f97d6e4).'
+    #       })
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
