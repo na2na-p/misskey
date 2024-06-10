@@ -32,7 +32,7 @@ jobs:
   pnpm_install:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         fetch-depth: 0
         submodules: true
@@ -63,7 +63,7 @@ jobs:
       eslint-cache-version: v1
       eslint-cache-path: ${{ github.workspace }}/node_modules/.cache/eslint-${{ matrix.workspace }}
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         fetch-depth: 0
         submodules: true
@@ -93,7 +93,7 @@ jobs:
         - sw
         - misskey-js
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         fetch-depth: 0
         submodules: true

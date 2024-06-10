@@ -42,7 +42,7 @@ jobs:
           - 56312:6379
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         submodules: true
     - name: Install pnpm
@@ -91,7 +91,7 @@ jobs:
           - 56312:6379
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         submodules: true
     # https://github.com/cypress-io/cypress-docker-images/issues/150
