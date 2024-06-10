@@ -29,7 +29,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:16
         ports:
           - 54312:5432
         env:
@@ -91,7 +91,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:16
         ports:
           - 54312:5432
         env:
