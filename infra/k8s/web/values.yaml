@@ -35,10 +35,10 @@ hpa:
 
 resources:
   requests:
-    cpu: 100m
+    cpu: 64m
     memory: 1Gi
   limits:
-    cpu: 512m
+    cpu: 350m
     memory: 2Gi
 
 livenessProbe:
