@@ -22,6 +22,7 @@ spec:
           ports:
             - containerPort: 3000
           readinessProbe:
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             httpGet:
               path: /healthz
               port: 3000

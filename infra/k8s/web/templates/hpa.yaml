@@ -19,17 +19,23 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ .Values.hpa.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.targetMemoryUtilizationPercentage }}
   behavior:
     scaleUp:
       policies:
         - type: Pods
           value: 2
           periodSeconds: 60
-      stabilizationWindowSeconds: 300
+      stabilizationWindowSeconds: 30
     scaleDown:
       policies:
         - type: Pods
           value: 2
           periodSeconds: 60
-      stabilizationWindowSeconds: 300
+      stabilizationWindowSeconds: 60
 {{- end }}

@@ -1,6 +1,6 @@
 image:
   repository: na2na/misskey-na2na
-  tag: "2023.11.1-na2na-v4"
+  tag: "2024.5.0-na2na-v2"
   pullPolicy: Always
 
 database:
@@ -32,15 +32,19 @@ hpa:
   minReplicas: 2
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
 resources:
   requests:
-    cpu: 64m
-    memory: 1Gi
+    cpu: 100m
+    memory: 1500Mi
   limits:
     cpu: 350m
     memory: 2Gi
 
 livenessProbe:
-  initialDelaySeconds: 60
+  initialDelaySeconds: 80
   periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 80
