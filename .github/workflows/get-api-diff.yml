@@ -27,7 +27,7 @@ jobs:
             ref: refs/pull/${{ github.event.number }}/merge
 
     steps:
-    - uses: actions/checkout@v4.1.6
+    - uses: actions/checkout@v4.1.7
       with:
         ref: ${{ matrix.ref }}
         submodules: true
