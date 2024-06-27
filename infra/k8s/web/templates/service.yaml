@@ -1,4 +1,4 @@
-{{- if eq .Values.service.type "NodePort" }}
+{{- if eq .Values.service.type "ClusterIP" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,12 +6,11 @@ metadata:
   labels:
     {{- include "web.labels" . | nindent 4 }}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     {{- include "web.selectorLabels" . | nindent 4 }}
   ports:
     - name: http
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
-      nodePort: {{ .Values.service.nodePort }}
 {{- end }}

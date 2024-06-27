@@ -16,9 +16,8 @@ redis:
 
 service:
   host: "https://mk8stest.na2na.dev/"
-  type: NodePort
+  type: ClusterIP
   port: 3000
-  nodePort: 30000
 
 nodeSelector: {}
 
