@@ -30,15 +30,15 @@ hpa:
   enabled: true
   minReplicas: 2
   maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 60
 
 resources:
   requests:
-    cpu: 100m
+    cpu: 200m
     memory: 1500Mi
   limits:
-    cpu: 350m
+    cpu: 450m
     memory: 2Gi
 
 livenessProbe:
