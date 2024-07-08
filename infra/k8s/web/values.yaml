@@ -1,6 +1,6 @@
 image:
   repository: na2na/misskey-na2na
-  tag: "2024.5.0-na2na-v2"
+  tag: "2024.5.0-na2na-v3"
   pullPolicy: Always
 
 database:
