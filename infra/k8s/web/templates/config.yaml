@@ -9,7 +9,7 @@ data:
     #───┘ URL └─────────────────────────────────────────────────────
 
     # Final accessible URL seen by a user.
-    hostUrl: {{ .Values.misskey-cm.hostUrl }}
+    hostUrl: "{{ .Values.misskey-cm.hostUrl }}"
 
     # ONCE YOU HAVE STARTED THE INSTANCE, DO NOT CHANGE THE
     # URL SETTINGS AFTER THAT!
