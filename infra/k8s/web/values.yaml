@@ -4,7 +4,7 @@ image:
     tag: "2024.5.0-na2na-v3"
     pullPolicy: IfNotPresent
 
-misskey-cm:
+misskeyCm:
   hostUrl: "https://mk8stest.na2na.dev/"
   database:
     host: "hoge.local"
