@@ -1,21 +1,23 @@
 image:
-  repository: na2na/misskey-na2na
-  tag: "2024.5.0-na2na-v3"
-  pullPolicy: Always
+  web:
+    repository: na2na/misskey-na2na
+    tag: "2024.5.0-na2na-v3"
+    pullPolicy: IfNotPresent
 
-database:
-  host: "hoge.local"
-  port: 5432
-  db: "misskey"
-  user: "misskey"
-  pass: "misskey"
-
-redis:
-  host: "localhost"
-  port: 6379
+misskey-cm:
+  hostUrl: "https://mk8stest.na2na.dev/"
+  database:
+    host: "hoge.local"
+    port: 5432
+    db: "misskey"
+    user: "misskey"
+    pass: "misskey"
+  redis:
+    host: "localhost"
+    port: 6379
+  misskeyBlockMentionsFromUnfamiliarRemoteUsers: false
 
 service:
-  host: "https://mk8stest.na2na.dev/"
   type: ClusterIP
   port: 3000
 

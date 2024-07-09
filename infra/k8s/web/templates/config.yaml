@@ -9,7 +9,7 @@ data:
     #───┘ URL └─────────────────────────────────────────────────────
 
     # Final accessible URL seen by a user.
-    url: {{ .Values.service.host }}
+    hostUrl: {{ .Values.misskey-cm.hostUrl }}
 
     # ONCE YOU HAVE STARTED THE INSTANCE, DO NOT CHANGE THE
     # URL SETTINGS AFTER THAT!
@@ -37,15 +37,15 @@ data:
     #───┘ PostgreSQL configuration └────────────────────────────────
 
     db:
-      host: {{ .Values.database.host }}
-      port: {{ .Values.database.port }}
+      host: {{ .Values.misskey-cm.database.host }}
+      port: {{ .Values.misskey-cm.database.port }}
 
       # Database name
-      db: {{ .Values.database.db }}
+      db: {{ .Values.misskey-cm.database.db }}
 
       # Auth
-      user: {{ .Values.database.user }}
-      pass: {{ .Values.database.pass }}
+      user: {{ .Values.misskey-cm.database.user }}
+      pass: {{ .Values.misskey-cm.database.pass }}
 
       # Whether disable Caching queries
       #disableCache: true
@@ -59,8 +59,8 @@ data:
     #───┘ Redis configuration └─────────────────────────────────────
 
     redis:
-      host: {{ .Values.redis.host }}
-      port: {{ .Values.redis.port }}
+      host: {{ .Values.misskey-cm.redis.host }}
+      port: {{ .Values.misskey-cm.redis.port }}
       #family: 0  # 0=Both, 4=IPv4, 6=IPv6
       #pass: example-pass
       #prefix: example-prefix
@@ -154,7 +154,7 @@ data:
     # Upload or download file size limits (bytes)
     maxFileSize: 5000000000
     # default: false
-    misskeyBlockMentionsFromUnfamiliarRemoteUsers: true
+    misskeyBlockMentionsFromUnfamiliarRemoteUsers: {{ .Values.misskey-cm.misskeyBlockMentionsFromUnfamiliarRemoteUsers }}
 
 
 kind: ConfigMap
