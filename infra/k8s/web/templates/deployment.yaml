@@ -6,7 +6,7 @@ metadata:
     {{- include "web.labels" . | nindent 4 }}
 spec:
   strategy:
-    type: Recreate
+    type: {{ .Values.image.web.strategy }}
   selector:
     matchLabels:
       {{- include "web.selectorLabels" . | nindent 6 }}
