@@ -3,6 +3,7 @@ image:
     repository: na2na/misskey-na2na
     tag: "2024.5.0-na2na-v3"
     pullPolicy: IfNotPresent
+    strategy: RollingUpdate
 
 misskeyCm:
   hostUrl: "https://mk8stest.na2na.dev/"
