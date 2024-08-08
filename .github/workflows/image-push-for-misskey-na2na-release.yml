@@ -49,5 +49,4 @@ jobs:
               --builder="${{ steps.buildx.outputs.name }}" \
               --set='web.tags=${{ inputs.IMAGE_REPOSITORY }}/${{ inputs.IMAGE_NAME }}:${{ inputs.MISSKEY_VERSION }}' \
               --set='web.tags=${{ inputs.IMAGE_REPOSITORY }}/${{ inputs.IMAGE_NAME }}:${{ steps.prepare-for-build.outputs.sha_short }}' \
-              --set='web.tags=${{ inputs.IMAGE_REPOSITORY }}/${{ inputs.IMAGE_NAME }}:release' \
               --push
