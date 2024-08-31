@@ -224,6 +224,7 @@ export function loadConfig(): Config {
 	const scheme = url.protocol.replace(/:$/, '');
 	const wsScheme = scheme.replace('http', 'ws');
 
+	const dbHost = config.db.host ?? process.env.DATABASE_HOST ?? '';
 	const dbDb = config.db.db ?? process.env.DATABASE_DB ?? '';
 	const dbUser = config.db.user ?? process.env.DATABASE_USER ?? '';
 	const dbPass = config.db.pass ?? process.env.DATABASE_PASSWORD ?? '';
@@ -251,7 +252,7 @@ export function loadConfig(): Config {
 		apiUrl: `${scheme}://${host}/api`,
 		authUrl: `${scheme}://${host}/auth`,
 		driveUrl: `${scheme}://${host}/files`,
-		db: { ...config.db, db: dbDb, user: dbUser, pass: dbPass },
+		db: { ...config.db, host: dbHost, db: dbDb, user: dbUser, pass: dbPass },
 		dbReplications: config.dbReplications,
 		dbSlaves: config.dbSlaves,
 		meilisearch: config.meilisearch,
