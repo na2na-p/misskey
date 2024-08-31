@@ -2,7 +2,7 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: descheduler-cluster-role
+  name: {{ include "web.fullname" . }}-descheduler-cluster-role
 rules:
 - apiGroups: ["events.k8s.io"]
   resources: ["events"]
@@ -38,11 +38,11 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: descheduler-cluster-role-binding
+  name: {{ include "web.fullname" . }}-descheduler-cluster-role-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: descheduler-cluster-role
+  name: {{ include "web.fullname" . }}-descheduler-cluster-role
 subjects:
   - name: {{ include "web.fullname" . }}-ksa
     kind: ServiceAccount

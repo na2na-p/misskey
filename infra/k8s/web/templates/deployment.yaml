@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "web.labels" . | nindent 4 }}
 spec:
+  revisionHistoryLimit: 5
   strategy:
     type: {{ .Values.image.web.strategy }}
   selector:
