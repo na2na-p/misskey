@@ -11,11 +11,11 @@ image:
 misskeyCm:
   hostUrl: "https://mk8stest.na2na.dev/"
   database:
-    host: "hoge.local"
+    host: ""
     port: 5432
-    db: "misskey"
-    user: "misskey"
-    pass: "misskey"
+    db: ""
+    user: ""
+    pass: ""
   redis:
     host: "localhost"
     port: 6379
@@ -57,3 +57,15 @@ descheduler:
   enabled: true
   maxPodLifeTimeSeconds: 86400
   schedule: "0 */6 * * *"
+
+externalSecrets:
+  enabled: true
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: secretstore
+  targetName: misskey-external-secret
+  creationPolicy: Owner
+  remoteRef:
+    databaseHostKey: ""
+    databasePasswordKey: ""
