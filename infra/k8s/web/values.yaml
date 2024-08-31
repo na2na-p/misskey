@@ -28,7 +28,9 @@ tolerations: []
 
 affinity: {}
 
-# HPAの設定
+pdb:
+  enabled: true
+  minAvailable: 1
 hpa:
   enabled: true
   minReplicas: 2
