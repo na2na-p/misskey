@@ -37,7 +37,9 @@ data:
     #───┘ PostgreSQL configuration └────────────────────────────────
 
     db:
+      {{ if .Values.misskeyCm.database.host }}
       host: {{ .Values.misskeyCm.database.host }}
+      {{ end }}
       port: {{ .Values.misskeyCm.database.port }}
 
       # Database name
@@ -45,7 +47,9 @@ data:
 
       # Auth
       user: {{ .Values.misskeyCm.database.user }}
+      {{ if .Values.misskeyCm.database.pass }}
       pass: {{ .Values.misskeyCm.database.pass }}
+      {{ end }}
 
       # Whether disable Caching queries
       #disableCache: true
