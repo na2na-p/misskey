@@ -1,0 +1,21 @@
+{{- if .Values.descheduler.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "web.fullname" . }}
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha2"
+    kind: "DeschedulerPolicy"
+    profiles:
+      - name: ProfileName
+        pluginConfig:
+          - name: "PodLifeTime"
+            args:
+              maxPodLifeTimeSeconds: {{ .Values.descheduler.maxPodLifeTimeSeconds }}
+              namespaces: ["{{ .Release.Namespace }}"]
+        plugins:
+          deschedule:
+            enabled:
+              - "PodLifeTime"
+{{- end }}

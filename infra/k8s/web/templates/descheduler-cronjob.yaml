@@ -1,0 +1,37 @@
+{{- if .Values.descheduler.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "web.fullname" . }}
+spec:
+  schedule: "{{ .Values.descheduler.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: descheduler
+              image: "{{ .Values.image.descheduler.repository }}:{{ .Values.image.descheduler.tag }}"
+              command:
+                - "/bin/descheduler"
+              args:
+                - --policy-config-file
+                - /policy-dir/policy.yaml
+              volumeMounts:
+              - mountPath: /policy-dir
+                name: policy-volume
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /healthz
+                  port: 10258
+                  scheme: HTTPS
+                initialDelaySeconds: 3
+                periodSeconds: 10
+          restartPolicy: Never
+          serviceAccountName: {{ include "web.fullname" . }}-ksa
+          volumes:
+            - name: policy-volume
+              configMap:
+                name: {{ include "web.fullname" . }}
+{{- end }}

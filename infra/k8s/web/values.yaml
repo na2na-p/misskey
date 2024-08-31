@@ -4,6 +4,9 @@ image:
     tag: "2024.5.0-na2na-v3"
     pullPolicy: IfNotPresent
     strategy: RollingUpdate
+  descheduler:
+    repository: registry.k8s.io/descheduler/descheduler
+    tag: v0.30.1
 
 misskeyCm:
   hostUrl: "https://mk8stest.na2na.dev/"
@@ -37,7 +40,6 @@ hpa:
   maxReplicas: 5
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 60
-
 resources:
   requests:
     cpu: 200m
@@ -45,10 +47,13 @@ resources:
   limits:
     cpu: 450m
     memory: 2Gi
-
 livenessProbe:
   initialDelaySeconds: 80
   periodSeconds: 10
-
 readinessProbe:
   initialDelaySeconds: 80
+
+descheduler:
+  enabled: true
+  maxPodLifeTimeSeconds: 86400
+  schedule: "0 */6 * * *"
