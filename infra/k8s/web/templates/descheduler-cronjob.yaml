@@ -5,6 +5,8 @@ metadata:
   name: {{ include "web.fullname" . }}
 spec:
   schedule: "{{ .Values.descheduler.schedule }}"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:

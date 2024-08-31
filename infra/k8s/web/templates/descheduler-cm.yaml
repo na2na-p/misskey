@@ -13,7 +13,8 @@ data:
           - name: "PodLifeTime"
             args:
               maxPodLifeTimeSeconds: {{ .Values.descheduler.maxPodLifeTimeSeconds }}
-              namespaces: ["{{ .Release.Namespace }}"]
+              namespaces:
+                include: ["{{ .Release.Namespace }}"]
         plugins:
           deschedule:
             enabled:
