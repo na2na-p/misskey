@@ -46,7 +46,9 @@ data:
       db: {{ .Values.misskeyCm.database.db }}
 
       # Auth
+      {{ if .Values.misskeyCm.database.user }}
       user: {{ .Values.misskeyCm.database.user }}
+      {{ end }}
       {{ if .Values.misskeyCm.database.pass }}
       pass: {{ .Values.misskeyCm.database.pass }}
       {{ end }}

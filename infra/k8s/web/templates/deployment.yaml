@@ -40,6 +40,17 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "web.fullname" . }}-external-secret
+                  key: DATABASE_HOST
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "web.fullname" . }}-external-secret
+                  key: DATABASE_PASSWORD
           volumeMounts:
           - mountPath: /misskey/.config
             name: misskey-default-conf-file
