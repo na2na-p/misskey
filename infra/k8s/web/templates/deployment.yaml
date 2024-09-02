@@ -51,6 +51,13 @@ spec:
                 secretKeyRef:
                   name: {{ include "web.fullname" . }}-external-secret
                   key: DATABASE_PASSWORD
+            {{ if and .Values.misskeyCm.meilisearch.enabled .Values.externalSecrets.remoteRef.meiliMasterKeyKey }}
+            - name: MEILISEARCH_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "web.fullname" . }}-external-secret
+                  key: MEILISEARCH_MASTER_KEY
+            {{ end }}
           volumeMounts:
           - mountPath: /misskey/.config
             name: misskey-default-conf-file

@@ -20,6 +20,15 @@ misskeyCm:
     host: "localhost"
     port: 6379
   misskeyBlockMentionsFromUnfamiliarRemoteUsers: false
+  meilisearch:
+    enabled: false
+    host: "localhost"
+    port: 7700
+    # 空なら環境変数を見る
+    # externalSecrets.remoteRef.meiliMasterKeyKey に指定されたキーの値を使う
+    apikey: ""
+    ssl: false
+    scope: "local"
 
 service:
   type: ClusterIP
@@ -67,5 +76,9 @@ externalSecrets:
   targetName: misskey-external-secret
   creationPolicy: Owner
   remoteRef:
+    # DATABASE_HOST
     databaseHostKey: ""
+    # DATABASE_PASSWORD
     databasePasswordKey: ""
+    # MEILISEARCH_MASTER_KEY
+    meiliMasterKeyKey: ""
