@@ -284,7 +284,19 @@ export function loadConfig(): Config {
 		dbReplications: config.dbReplications,
 		dbSlaves: config.dbSlaves,
 		fulltextSearch: config.fulltextSearch,
-		meilisearch: config.meilisearch,
+		meilisearch: (() => {
+			const meiliMasterKeyKey = config.meilisearch?.apiKey ?? process.env.MEILISEARCH_MASTER_KEY;
+			if (config.meilisearch) {
+				if (!meiliMasterKeyKey) {
+					throw new Error('meilisearch.apiKey is required.');
+				}
+				return {
+					...config.meilisearch,
+					apiKey: meiliMasterKeyKey,
+				};
+			}
+			return undefined;
+		})(),
 		redis,
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,
