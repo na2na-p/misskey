@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:1.8
+# syntax = docker/dockerfile:1.9
 
 ARG NODE_VERSION=20.17.0-bullseye
 
