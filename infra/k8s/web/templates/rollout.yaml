@@ -1,13 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ include "web.fullname" . }}
   labels:
     {{- include "web.labels" . | nindent 4 }}
 spec:
-  revisionHistoryLimit: 5
   strategy:
-    type: {{ .Values.image.web.strategy }}
+    blueGreen:
+      activeService: {{ include "web.fullname" . }}-active
+      previewService: {{ include "web.fullname" . }}-preview
+      autoPromotionEnabled: false
+      scaleDownDelaySeconds: 30
   selector:
     matchLabels:
       {{- include "web.selectorLabels" . | nindent 6 }}
@@ -65,3 +68,34 @@ spec:
         - name: misskey-default-conf-file
           configMap:
             name: misskey-default-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "web.fullname" . }}-active
+  labels:
+    {{- include "web.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "web.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "web.fullname" . }}-preview
+  labels:
+    {{- include "web.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "web.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}

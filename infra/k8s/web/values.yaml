@@ -56,10 +56,10 @@ hpa:
 resources:
   requests:
     cpu: 200m
-    memory: 1500Mi
+    memory: 1250Mi
   limits:
     cpu: 450m
-    memory: 2Gi
+    memory: 1500Mi
 livenessProbe:
   initialDelaySeconds: 80
   periodSeconds: 10
