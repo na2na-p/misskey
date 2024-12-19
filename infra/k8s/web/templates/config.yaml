@@ -148,7 +148,9 @@ data:
       #family: 0  # 0=Both, 4=IPv4, 6=IPv6
       #pass: example-pass
       #prefix: example-prefix
-      #db: 1
+      {{ if .Values.misskeyCm.redis.db }}
+      db: 1 {{ .Values.misskeyCm.redis.db }}
+      {{ end }}
       # You can specify more ioredis options...
       #username: example-username
 
