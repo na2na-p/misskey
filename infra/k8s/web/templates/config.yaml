@@ -149,7 +149,7 @@ data:
       #pass: example-pass
       #prefix: example-prefix
       {{ if .Values.misskeyCm.redis.db }}
-      db: 1 {{ .Values.misskeyCm.redis.db }}
+      db: {{ .Values.misskeyCm.redis.db }}
       {{ end }}
       # You can specify more ioredis options...
       #username: example-username
