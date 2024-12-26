@@ -29,13 +29,11 @@ spec:
     scaleUp:
       policies:
         - type: Pods
-          value: 2
           periodSeconds: 60
       stabilizationWindowSeconds: {{ .Values.hpa.scaleUp.stabilizationWindowSeconds }}
     scaleDown:
       policies:
         - type: Pods
-          value: 2
           periodSeconds: 60
       stabilizationWindowSeconds: {{ .Values.hpa.scaleDown.stabilizationWindowSeconds }}
 {{- end }}
