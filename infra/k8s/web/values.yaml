@@ -48,7 +48,7 @@ pdb:
 hpa:
   enabled: true
   minReplicas: 2
-  maxReplicas: 5
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 85
   scaleUp:
