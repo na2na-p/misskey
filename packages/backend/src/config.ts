@@ -361,7 +361,7 @@ function tryCreateUrl(url: string) {
 function convertRedisOptions(options: RedisOptionsSource, host: string): RedisOptions & RedisOptionsSource {
 	return {
 		...options,
-		password: options.pass,
+		password: options.pass ?? process.env.REDIS_PASSWORD ?? '',
 		prefix: options.prefix ?? host,
 		family: options.family ?? 0,
 		keyPrefix: `${options.prefix ?? host}:`,
