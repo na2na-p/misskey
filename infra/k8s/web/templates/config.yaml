@@ -146,7 +146,9 @@ data:
       host: {{ .Values.misskeyCm.redis.host }}
       port: {{ .Values.misskeyCm.redis.port }}
       #family: 0  # 0=Both, 4=IPv4, 6=IPv6
-      #pass: example-pass
+      {{ if .Values.misskeyCm.redis.password }}
+      pass: {{ .Values.misskeyCm.redis.password }}
+      {{ end }}
       #prefix: example-prefix
       {{ if .Values.misskeyCm.redis.db }}
       db: {{ .Values.misskeyCm.redis.db }}
