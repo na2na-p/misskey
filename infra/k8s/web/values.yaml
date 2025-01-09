@@ -20,6 +20,7 @@ misskeyCm:
     host: "localhost"
     port: 6379
     db: ""
+    password: ""
   misskeyBlockMentionsFromUnfamiliarRemoteUsers: false
   meilisearch:
     enabled: false
@@ -85,5 +86,7 @@ externalSecrets:
     databaseHostKey: ""
     # DATABASE_PASSWORD
     databasePasswordKey: ""
+    # REDIS_PASSWORD
+    redisPasswordKey: ""
     # MEILISEARCH_MASTER_KEY
     meiliMasterKeyKey: ""

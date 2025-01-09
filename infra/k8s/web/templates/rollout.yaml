@@ -54,6 +54,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "web.fullname" . }}-external-secret
                   key: DATABASE_PASSWORD
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "web.fullname" . }}-external-secret
+                  key: REDIS_PASSWORD
             {{ if and .Values.misskeyCm.meilisearch.enabled .Values.externalSecrets.remoteRef.meiliMasterKeyKey }}
             - name: MEILISEARCH_MASTER_KEY
               valueFrom:
