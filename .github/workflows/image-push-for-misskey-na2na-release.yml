@@ -24,14 +24,6 @@ jobs:
         id: prepare-for-build
         run: |
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: Cache Docker Build Cache
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: docker-build-cache-${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            docker-build-cache-${{ github.ref }}
-            docker-build-cache-
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
