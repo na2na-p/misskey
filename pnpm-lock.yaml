@@ -132,8 +132,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0
       '@misskey-dev/summaly':
-        specifier: 5.2.0
-        version: 5.2.0
+        specifier: 5.2.1
+        version: 5.2.1
       '@napi-rs/canvas':
         specifier: 0.1.68
         version: 0.1.68
@@ -879,8 +879,8 @@ importers:
         version: 5.3.1
     devDependencies:
       '@misskey-dev/summaly':
-        specifier: 5.2.0
-        version: 5.2.0
+        specifier: 5.2.1
+        version: 5.2.1
       '@storybook/addon-actions':
         specifier: 8.6.7
         version: 8.6.7(storybook@8.6.7(bufferutil@4.0.9)(prettier@3.5.3)(utf-8-validate@6.0.5))
@@ -1150,8 +1150,8 @@ importers:
         version: 3.5.13(typescript@5.8.2)
     devDependencies:
       '@misskey-dev/summaly':
-        specifier: 5.2.0
-        version: 5.2.0
+        specifier: 5.2.1
+        version: 5.2.1
       '@testing-library/vue':
         specifier: 8.1.0
         version: 8.1.0(@vue/compiler-sfc@3.5.13)(@vue/server-renderer@3.5.13(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))
@@ -2867,8 +2867,8 @@ packages:
   '@misskey-dev/sharp-read-bmp@1.2.0':
     resolution: {integrity: sha512-er4pRakXzHYfEgOFAFfQagqDouG+wLm+kwNq1I30oSdIHDa0wM3KjFpfIGQ25Fks4GcmOl1s7Zh6xoQu5dNjTw==}
 
-  '@misskey-dev/summaly@5.2.0':
-    resolution: {integrity: sha512-Djg6emAOdcY81a8TMTFi/qgIdTO96Z2qZfhHE+k+YRd8z9V/5MxauJr+U9z4kUVjSJJ1yzdOWqi26OsmVUaXZA==}
+  '@misskey-dev/summaly@5.2.1':
+    resolution: {integrity: sha512-fcFd7ssHAghRntewRROOpRxv+VH18uz85Kzg6pZK1EFyqPOXxf39ErRA9HnJSzPYQT6KJTqBWuKHbCGoFlceXg==}
 
   '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.2':
     resolution: {integrity: sha512-9bfjwDxIDWmmOKusUcqdS4Rw+SETlp9Dy39Xui9BEGEk19dDwH0jhipwFzEff/pFg95NKymc6TOTbRKcWeRqyQ==}
@@ -8491,6 +8491,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@2.6.13:
     resolution: {integrity: sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==}
@@ -10878,6 +10879,9 @@ packages:
   vue-component-type-helpers@2.0.16:
     resolution: {integrity: sha512-qisL/iAfdO++7w+SsfYQJVPj6QKvxp4i1MMxvsNO41z/8zu3KuAw9LkhKUfP/kcOWGDxESp+pQObWppXusejCA==}
 
+  vue-component-type-helpers@2.2.10:
+    resolution: {integrity: sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==}
+
   vue-component-type-helpers@2.2.8:
     resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
 
@@ -12954,7 +12958,7 @@ snapshots:
       decode-ico: 0.4.1
       sharp: 0.33.5
 
-  '@misskey-dev/summaly@5.2.0':
+  '@misskey-dev/summaly@5.2.1':
     dependencies:
       cheerio: 1.0.0
       escape-regexp: 0.0.1
@@ -14511,7 +14515,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.13(typescript@5.8.2)
-      vue-component-type-helpers: 2.2.8
+      vue-component-type-helpers: 2.2.10
 
   '@stylistic/eslint-plugin@2.13.0(eslint@9.22.0)(typescript@5.8.2)':
     dependencies:
@@ -22669,6 +22673,8 @@ snapshots:
   vue-component-type-helpers@1.8.4: {}
 
   vue-component-type-helpers@2.0.16: {}
+
+  vue-component-type-helpers@2.2.10: {}
 
   vue-component-type-helpers@2.2.8: {}
 
