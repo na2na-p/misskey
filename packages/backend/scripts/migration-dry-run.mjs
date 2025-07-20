@@ -4,19 +4,20 @@
  */
 // @ts-check
 import { DataSource } from 'typeorm';
+import chalk from 'chalk';
 import { loadConfig } from '../built/config.js';
 import { entities } from '../built/postgres.js';
 import { isConcurrentIndexMigrationEnabled } from '../migration/js/migration-config.js';
-import chalk from 'chalk';
 
 /**
  * マイグレーションドライラン機能
  * 実際にマイグレーションを実行せずに、実行予定のマイグレーションを確認する
  */
 class MigrationDryRun {
-	constructor() {
+	constructor(options = {}) {
 		this.config = loadConfig();
 		this.dataSource = null;
+		this.outputFormat = options.outputFormat || 'human';
 		this.results = {
 			status: 'success',
 			timestamp: new Date().toISOString(),
@@ -57,7 +58,7 @@ class MigrationDryRun {
 			this.results.errors.push({
 				type: 'database_connection',
 				message: error.message,
-				stack: error.stack
+				stack: error.stack,
 			});
 			return false;
 		}
@@ -67,7 +68,7 @@ class MigrationDryRun {
 		try {
 			// 実行済みマイグレーションを取得
 			const executedMigrations = await this.dataSource.query(
-				`SELECT * FROM "migrations" ORDER BY "timestamp" ASC`
+				'SELECT * FROM "migrations" ORDER BY "timestamp" ASC',
 			);
 
 			// 実行済みマイグレーションの情報を格納
@@ -75,7 +76,7 @@ class MigrationDryRun {
 				id: migration.id,
 				timestamp: migration.timestamp,
 				name: migration.name,
-				executed_at: migration.timestamp
+				executed_at: migration.timestamp,
 			}));
 
 			// TypeORMのrunMigrationsメソッドをdryRunモードで実行して未実行マイグレーションを取得
@@ -101,7 +102,7 @@ class MigrationDryRun {
 							name: migrationName,
 							timestamp: this.extractTimestampFromName(migrationName),
 							file_path: `migration/${migrationName}.js`,
-							description: migrationName
+							description: migrationName,
 						};
 
 						this.results.migrations.pending.push(migrationInfo);
@@ -122,7 +123,7 @@ class MigrationDryRun {
 						name: migrationName,
 						timestamp: this.extractTimestampFromName(migrationName),
 						file_path: `migration/${migrationName}.js`,
-						description: migrationName
+						description: migrationName,
 					};
 
 					this.results.migrations.pending.push(migrationInfo);
@@ -131,13 +132,12 @@ class MigrationDryRun {
 
 			this.results.migrations.total_pending = this.results.migrations.pending.length;
 			this.results.migrations.total_executed = this.results.migrations.executed.length;
-
 		} catch (error) {
 			this.results.status = 'error';
 			this.results.errors.push({
 				type: 'migration_check',
 				message: error.message,
-				stack: error.stack
+				stack: error.stack,
 			});
 		}
 	}
@@ -183,7 +183,10 @@ class MigrationDryRun {
 	 * ドライランを実行
 	 */
 	async run() {
-		console.log(chalk.blue('🔍 マイグレーションドライランを開始します...'));
+		// JSON出力時は余計な標準出力を抑制
+		if (this.outputFormat !== 'json') {
+			console.log(chalk.blue('🔍 マイグレーションドライランを開始します...'));
+		}
 
 		// データベース接続
 		const connected = await this.initializeDataSource();
@@ -270,7 +273,7 @@ async function main() {
 		return;
 	}
 
-	const dryRun = new MigrationDryRun();
+	const dryRun = new MigrationDryRun({ outputFormat });
 
 	try {
 		const results = await dryRun.run();
@@ -286,7 +289,20 @@ async function main() {
 			process.exit(1);
 		}
 	} catch (error) {
-		console.error(chalk.red('予期しないエラーが発生しました:'), error);
+		if (outputFormat === 'json') {
+			// JSON出力時はエラーもJSON形式で出力
+			console.log(JSON.stringify({
+				status: 'error',
+				timestamp: new Date().toISOString(),
+				errors: [{
+					type: 'unexpected_error',
+					message: error.message,
+					stack: error.stack
+				}]
+			}, null, 2));
+		} else {
+			console.error(chalk.red('予期しないエラーが発生しました:'), error);
+		}
 		process.exit(1);
 	}
 }
