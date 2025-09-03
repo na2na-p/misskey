@@ -16,7 +16,7 @@ services:
 
   redis:
     restart: unless-stopped
-    image: redis:7-alpine
+    image: redis:8-alpine
     networks:
       - internal_network
     volumes:

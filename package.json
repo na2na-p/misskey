@@ -36,6 +36,7 @@
 		"cli": "cd packages/backend && pnpm cli",
 		"init": "pnpm migrate",
 		"migrate": "cd packages/backend && pnpm migrate",
+		"check:migration": "cd packages/backend && pnpm migrate:dry-run:json",
 		"revert": "cd packages/backend && pnpm revert",
 		"check:connect": "cd packages/backend && pnpm check:connect",
 		"migrateandstart": "pnpm migrate && pnpm start",
@@ -51,7 +52,9 @@
 		"test-and-coverage": "pnpm -r test-and-coverage",
 		"clean": "node scripts/clean.mjs",
 		"clean-all": "node scripts/clean-all.mjs",
-		"cleanall": "pnpm clean-all"
+		"cleanall": "pnpm clean-all",
+		"server-update": "git fetch && git reset --hard origin/deploy/on-premise && git submodule update --init && docker compose build && docker compose pull && docker compose down && docker compose up -d",
+		"db-backup": "source .config/docker.env && docker compose exec -T db pg_dump -U $POSTGRES_USER -Ft misskey -f /misskey-na2na-db/`date +%y%m%d-%H%M`.tar"
 	},
 	"dependencies": {
 		"esbuild": "0.28.2",

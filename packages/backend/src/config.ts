@@ -129,6 +129,8 @@ type Source = {
 			enableQueryParamLogging?: boolean,
 		}
 	}
+
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers?: boolean;
 };
 
 export type Config = {
@@ -230,6 +232,7 @@ export type Config = {
 	perUserNotificationsMaxCount: number;
 	deactivateAntennaThreshold: number;
 	pidFile: string;
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers: boolean;
 };
 
 export type FulltextSearchProvider = 'sqlLike' | 'sqlPgroonga' | 'meilisearch';
@@ -278,6 +281,7 @@ export function loadConfig(): Config {
 	const scheme = url.protocol.replace(/:$/, '');
 	const wsScheme = scheme.replace('http', 'ws');
 
+	const dbHost = config.db.host ?? process.env.DATABASE_HOST ?? '';
 	const dbDb = config.db.db ?? process.env.DATABASE_DB ?? '';
 	const dbUser = config.db.user ?? process.env.DATABASE_USER ?? '';
 	const dbPass = config.db.pass ?? process.env.DATABASE_PASSWORD ?? '';
@@ -314,11 +318,23 @@ export function loadConfig(): Config {
 		apiUrl: `${scheme}://${host}/api`,
 		authUrl: `${scheme}://${host}/auth`,
 		driveUrl: `${scheme}://${host}/files`,
-		db: { ...config.db, db: dbDb, user: dbUser, pass: dbPass },
+		db: { ...config.db, host: dbHost, db: dbDb, user: dbUser, pass: dbPass },
 		dbReplications: config.dbReplications,
 		dbSlaves: config.dbSlaves,
 		fulltextSearch: config.fulltextSearch,
-		meilisearch: config.meilisearch,
+		meilisearch: (() => {
+			const meiliMasterKeyKey = config.meilisearch?.apiKey ?? process.env.MEILISEARCH_MASTER_KEY;
+			if (config.meilisearch) {
+				if (!meiliMasterKeyKey) {
+					throw new Error('meilisearch.apiKey is required.');
+				}
+				return {
+					...config.meilisearch,
+					apiKey: meiliMasterKeyKey,
+				};
+			}
+			return undefined;
+		})(),
 		redis,
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,
@@ -358,6 +374,7 @@ export function loadConfig(): Config {
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
 		logging: config.logging,
+		misskeyBlockMentionsFromUnfamiliarRemoteUsers: config.misskeyBlockMentionsFromUnfamiliarRemoteUsers ?? false,
 	};
 }
 
@@ -372,7 +389,7 @@ function tryCreateUrl(url: string) {
 function convertRedisOptions(options: RedisOptionsSource, host: string): RedisOptionsResolved {
 	return {
 		...options,
-		password: options.pass,
+		password: options.pass ?? process.env.REDIS_PASSWORD ?? '',
 		prefix: options.prefix ?? host,
 		family: options.family ?? 0,
 		keyPrefix: `${options.prefix ?? host}:`,
