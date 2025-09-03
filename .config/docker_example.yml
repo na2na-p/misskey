@@ -294,3 +294,7 @@ proxyBypassHosts:
 #     # Disable query truncation. If set to true, the full text of the query will be output to the log.
 #     # default: false
 #     disableQueryTruncation: false
+
+# ローカル宛てのメンション、リプライ、引用ノートの発行元が、ローカルユーザーにフォローされていない場合に投稿を拒否するかどうか
+# default: false
+# misskeyBlockMentionsFromUnfamiliarRemoteUsers: false

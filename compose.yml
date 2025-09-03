@@ -1,0 +1,124 @@
+services:
+  web:
+    # build: .
+    image: na2na/misskey-na2na:release
+    restart: always
+    links:
+      - redis
+      # - db
+      # - meilisearch
+      # - es
+    depends_on:
+      redis:
+        condition: service_healthy
+      # db:
+      #   condition: service_healthy
+    networks:
+      - internal_network
+      - external_network
+    volumes:
+      - ./files:/misskey/files
+      - ./.config:/misskey/.config:ro
+
+  redis:
+    restart: always
+    image: redis:7.4.0-alpine
+    networks:
+      - internal_network
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: "redis-cli ping"
+      interval: 5s
+      retries: 20
+
+  # db:
+  #   restart: always
+  #   image: postgres:15.3-bullseye
+  #   networks:
+  #     - internal_network
+  #   env_file:
+  #     - .config/docker.env
+  #   volumes:
+  #     - postgres:/var/lib/postgresql/data
+  #     - ./db:/misskey-na2na-db
+  #   healthcheck:
+  #     test: "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+  #     interval: 5s
+  #     retries: 20
+
+  # meilisearch:
+  #   restart: always
+  #   image: getmeili/meilisearch:v1.1.1
+  #   environment:
+  #     - MEILI_NO_ANALYTICS=true
+  #     - MEILI_ENV=production
+  #   env_file:
+  #     - .config/meilisearch.env
+  #   networks:
+  #     - internal_network
+  #   volumes:
+  #     - meili_data:/meili_data
+
+  # tunnel:
+  #   image: cloudflare/cloudflared:2023.2.1
+  #   restart: always
+  #   links:
+  #     - nginx
+  #   depends_on:
+  #     web:
+  #       condition: service_started
+  #   command: tunnel --no-autoupdate run
+  #   networks:
+  #     - internal_network
+  #     - external_network
+  #   env_file:
+  #     - ./infra/cloudflare/.env
+
+  nginx:
+    build:
+      context: ./infra/nginx
+      dockerfile: ./Dockerfile
+    restart: always
+    links:
+      - web
+    depends_on:
+      web:
+        condition: service_started
+    networks:
+      - internal_network
+      - external_network
+    command: /bin/sh -c "envsubst '$$SERVER_NAME $$S3_PROXY_PASS'< /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    env_file:
+      - ./infra/nginx/.env
+    ports:
+      - 10080:80
+
+  # es:
+  #   restart: always
+  #   image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+  #   environment:
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - "TAKE_FILE_OWNERSHIP=111"
+  #     - discovery.type=single-node
+  #     - cluster.name=docker-cluster
+  #     - bootstrap.memory_lock=true
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   networks:
+  #     - internal_network
+  #   env_file:
+  #     - .config/docker.env
+  #   volumes:
+  #     - ./elasticsearch:/usr/share/elasticsearch/data
+networks:
+  internal_network:
+    internal: true
+  external_network:
+
+volumes:
+  # postgres:
+  redis:
+  # meili_data:

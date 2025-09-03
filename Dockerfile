@@ -78,7 +78,11 @@ ENV PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
+	ffmpeg tini curl libjemalloc-dev libjemalloc2 jq ca-certificates \
+	&& ARCH=$(dpkg --print-architecture) \
+	&& curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl" \
+	&& chmod +x kubectl \
+	&& mv kubectl /usr/local/bin/ \
 	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
 	&& groupadd -g "${GID}" misskey \
 	&& useradd -l -u "${UID}" -g "${GID}" -m -d /misskey misskey \
