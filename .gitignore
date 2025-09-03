@@ -83,3 +83,6 @@ vite.config.local-dev.ts.timestamp-*
 
 # Affinity
 *.af~lock~
+
+# nginx
+default.conf

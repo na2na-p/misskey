@@ -604,7 +604,15 @@ export class NoteCreateService implements OnApplicationShutdown {
 		}
 
 		// if the host is media-silenced, custom emojis are not allowed
-		if (this.utilityService.isMediaSilencedHost(this.meta.mediaSilencedHosts, user.host)) emojis = [];
+if (this.utilityService.isMediaSilencedHost(this.meta.mediaSilencedHosts, user.host)) emojis = [];
+		const willCauseNotification = mentionedUsers.filter(u => u.host === null).length > 0 || data.reply?.userHost === null || data.renote?.userHost === null;
+
+		if (this.config.misskeyBlockMentionsFromUnfamiliarRemoteUsers === true && user.host !== null && willCauseNotification) {
+			const userEntity = await this.usersRepository.findOneBy({ id: user.id });
+			if ((userEntity?.followersCount ?? 0) === 0) {
+				throw new Error('Temporarily, notes including mentions, replies and renotes to local-user from remote users which is not followed by local-users are not allowed');
+			}
+		}
 
 		tags = tags.filter(tag => Array.from(tag).length <= 128).splice(0, 32);
 
