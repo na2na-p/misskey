@@ -93,7 +93,7 @@ RUN apt-get update \
 COPY ./package.json ./package.json
 RUN node -e "console.log(JSON.parse(require('node:fs').readFileSync('./package.json')).packageManager)" | xargs npm install -g
 
-USER misskey
+USER ${UID}
 WORKDIR /misskey
 
 COPY --chown=misskey:misskey --from=target-builder /misskey/node_modules ./node_modules
