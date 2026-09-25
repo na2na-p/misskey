@@ -17,7 +17,12 @@ const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
 
 const configDir = resolve(_dirname, '../../../.config');
-const OUTPUT_PATH = resolve(_dirname, '../../../built/.config.json');
+// root FS を read-only で運用すると built/ へ書けないため、書き込み可能な
+// volume へ出力先を逃がせるようにする。解決規則は config.ts の
+// compiledConfigFilePath と一致させること。ずれると起動時に設定を読めない。
+const OUTPUT_PATH = process.env.MISSKEY_COMPILED_CONFIG_PATH
+	? resolve(process.env.MISSKEY_COMPILED_CONFIG_PATH)
+	: resolve(_dirname, '../../../built/.config.json');
 
 // TODO: yamlのパースに失敗したときのエラーハンドリング
 

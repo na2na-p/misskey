@@ -258,9 +258,14 @@ const projectBuiltDir = resolve(rootDir, 'built');
 
 const compiledConfigFilePathForTest = resolve(projectBuiltDir, '._config_.json');
 
-export const compiledConfigFilePath = fs.existsSync(compiledConfigFilePathForTest)
-	? compiledConfigFilePathForTest
-	: resolve(projectBuiltDir, '.config.json');
+// 解決規則は scripts/compile_config.js の出力先と一致させること。
+// env 指定時はテスト用ファイルより優先する。明示した出力先を読まないと、
+// compile-config の書き込み先と読み出し先がずれる。
+export const compiledConfigFilePath = process.env.MISSKEY_COMPILED_CONFIG_PATH
+	? resolve(process.env.MISSKEY_COMPILED_CONFIG_PATH)
+	: fs.existsSync(compiledConfigFilePathForTest)
+		? compiledConfigFilePathForTest
+		: resolve(projectBuiltDir, '.config.json');
 
 export function loadConfig(): Config {
 	if (!fs.existsSync(compiledConfigFilePath)) {
